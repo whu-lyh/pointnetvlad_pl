@@ -1,24 +1,32 @@
-from torch.utils.data import Dataset
 import os
-import numpy as np
-import torch
 import random
 from time import time
 
-from query_generation.generate_tuples import generate_tuples, generate_queries
+import numpy as np
+import torch
 from loading_pointclouds import load_pc_file, load_pc_files
+from torch.utils.data import Dataset
+
+from query_generation.generate_tuples import generate_queries, generate_tuples
+
 
 class UgvDataset(Dataset):
     def __init__(self, args, type='train', val_ratio=0.8):
+        """UGV dataset
+
+        Args:
+            args (dict): dataset configuration
+            type (str, optional): dataset type. Defaults to 'train'.
+            val_ratio (float, optional): the ratio to divide the validation part of data. Defaults to 0.8.
+        """
         self.root_dir=args.root_dir
         self.positives_per_query=args.positives_per_query
         self.negatives_per_query=args.negatives_per_query
         self.num_points = args.num_points 
-
+        #
         generate_tuples(self.root_dir)
-        self.queries = generate_queries(self.root_dir, self.num_points, \
-                                        args.voxel_resolution, args.filter_ground)
-
+        # load queries, also contains positive and negatives
+        self.queries = generate_queries(self.root_dir, self.num_points, args.voxel_resolution, args.filter_ground)
         data_len_ = len(self.queries.keys())
         use_idxes_ = list(range(data_len_))
         random.seed(0)
@@ -37,8 +45,7 @@ class UgvDataset(Dataset):
         self.last = []
         self.sample = []
 
-        print('Load UgvDataset')
-
+        print('Load UgvDataset done!')
 
     def get_default(self):
         if self.last == []:
@@ -47,7 +54,6 @@ class UgvDataset(Dataset):
         else:
             self.sample = [self.last[0], self.last[1], self.last[2], self.last[3]]
             return True
-
 
     def __getitem__(self, idx):
         item = self.use_idxes[idx]
@@ -69,10 +75,8 @@ class UgvDataset(Dataset):
         self.last = [query, positives, negatives, other_neg]
         return query.astype('float32'), positives.astype('float32'), negatives.astype('float32'), other_neg.astype('float32')
 
-
     def __len__(self):
         return len(self.use_idxes)
-
     
     def get_query_tuple(self, dict_value, num_positive, num_negative, all_dict_value, hard_neg=[], other_neg=True):
         

@@ -1,0 +1,3 @@
+[submodule "submodules/GPR_Competition"]
+	path = submodules/GPR_Competition
+	url = git@github.com:whu-lyh/GPR_Competition.git

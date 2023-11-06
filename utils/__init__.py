@@ -1,9 +1,11 @@
 # optimizer
 from torch.optim import SGD, Adam
-from .optimizers import *
 # scheduler
 from torch.optim.lr_scheduler import CosineAnnealingLR, MultiStepLR
+
+from .optimizers import *
 from .warmup_scheduler import GradualWarmupScheduler
+
 
 def get_optimizer(hparams, model):
     eps = 1e-7 if hparams.use_amp else 1e-8
@@ -24,6 +26,7 @@ def get_optimizer(hparams, model):
 
     return optimizer
 
+
 def get_scheduler(hparams, optimizer):
     eps = 1e-7 if hparams.use_amp else 1e-8
     if hparams.lr_scheduler == 'steplr':
@@ -43,9 +46,11 @@ def get_scheduler(hparams, optimizer):
 
     return scheduler
 
+
 def get_learning_rate(optimizer):
     for param_group in optimizer.param_groups:
         return param_group['lr']
+
 
 def extract_model_state_dict(ckpt_path, prefixes_to_ignore=[]):
     checkpoint = torch.load(ckpt_path, map_location=torch.device('cpu'))
@@ -70,6 +75,7 @@ def extract_model_state_dict(ckpt_path, prefixes_to_ignore=[]):
             else:
                 checkpoint_[k] = v
     return checkpoint_
+
 
 def load_ckpt(model, ckpt_path, prefixes_to_ignore=[]):
     model_dict = model.state_dict()

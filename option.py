@@ -4,7 +4,7 @@ def get_options():
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--root_dir', type=str,
-                        default='/media/s1/cjg/dataset/GRP/TRAIN',
+                        default='/lyh/GPR_competition/UGV/TRAIN',
                         help='root directory of the dataset')
     parser.add_argument('--positives_per_query', type=int, default=8,
                         help='Number of potential positives in each training tuple')
@@ -72,10 +72,12 @@ def get_options():
                         help='exponent for polynomial learning rate decay')
     ###########################
 
-    parser.add_argument('--use_amp', default=False, action="store_true",
-                        help='use mixed precision training (NOT SUPPORTED!)')
+    parser.add_argument('--use_amp', type=bool, default=True, 
+                        help='use mixed precision training')
+    parser.add_argument('--gradient_clip_val', type=float, default=None, 
+                        help='the value at which to clip gradients, None for ')
 
-    parser.add_argument('--exp_name', type=str, default='exp',
+    parser.add_argument('--exp_name', type=str, default='ugv_pr',
                         help='experiment name')
 
     return parser.parse_args()

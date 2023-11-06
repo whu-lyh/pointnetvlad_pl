@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 import os
 import pickle
+
 import numpy as np
+
 
 def get_queries_dict(filename):
     with open(filename, 'rb') as handle:
         queries = pickle.load(handle)
-        print("Queries Loaded.")
+        print("Queries loaded from {}.".format(filename))
         return queries
 
 
