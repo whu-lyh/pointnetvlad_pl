@@ -1,13 +1,15 @@
-import sys 
 import os
+import sys
+
 sys.path.append(os.path.dirname(__file__) + os.sep + '../')
 sys.path.append(os.path.dirname(__file__) + os.sep + './')
 
+import numpy as np
+import open3d as o3d
+import torch
+
 from models.pointnetvlad import PointNetVlad
 from query_generation.generate_tuples import process_point_cloud
-import open3d as o3d
-import numpy as np
-import torch
 from utils import load_ckpt
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

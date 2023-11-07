@@ -10,12 +10,14 @@ def get_options():
                         help='Number of potential positives in each training tuple')
     parser.add_argument('--negatives_per_query', type=int, default=8,
                         help='Number of definite negatives in each training tuple')
+    
     parser.add_argument('--num_points', type=int, default=4096,
                         help='Number of each point cloud')
     parser.add_argument('--output_dim', type=int, default=256,
                         help='Dim of desc output')
     parser.add_argument('--emb_dims', type=int, default=1024,
                         help='Dim of features')
+    
     parser.add_argument('--margin_1', type=float, default=0.5,
                         help='Margin for hinge loss')
     parser.add_argument('--margin_2', type=float, default=0.2,
@@ -26,6 +28,7 @@ def get_options():
                         help='If present, use best positives, otherwise use hardest positives')
     parser.add_argument('--loss_ignore_zero_batch', action='store_true',default=False,
                         help='If present, mean only batches with loss > 0.0')
+    
     parser.add_argument('--voxel_resolution', type=float, default=0.1,
                         help='The voxel size of downsample')
     parser.add_argument('--filter_ground', action='store_true',default=False,
