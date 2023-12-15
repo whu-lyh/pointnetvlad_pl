@@ -47,10 +47,6 @@ class System(pl.LightningModule):
             load_ckpt(self.model, self.hparams.ckpt_path, self.hparams.prefixes_to_ignore)
 
     def forward(self, query, positives, negatives, other_neg):
-        # print("query: ", query.shape)
-        # print("positives: ", positives.shape)
-        # print("negatives: ", negatives.shape)
-        # print("other_neg: ", other_neg.shape)
         feed_tensor = torch.cat((query, positives, negatives, other_neg), 1)
         feed_tensor = feed_tensor.view((-1, 1, self.hparams.num_points, 3))
         feed_tensor = feed_tensor.cuda()
@@ -67,7 +63,7 @@ class System(pl.LightningModule):
         loss = self.loss(output_query, output_positives, output_negatives, output_other_neg)
         self.log('train/loss', loss)
         self.log('lr', get_learning_rate(self.optimizer))
-        return {'train/loss': loss}
+        return {'loss': loss}
 
     def validation_step(self, batch:dict, batch_idx):
         query, positives, negatives, other_neg = batch
@@ -75,7 +71,7 @@ class System(pl.LightningModule):
             output_query, output_positives, output_negatives, output_other_neg = self.forward(query, positives, negatives, other_neg)
             loss = self.loss(output_query, output_positives, output_negatives, output_other_neg)
         self.log('val_loss', loss)
-        return {'val/loss': loss}
+        return {'val_loss': loss}
 
     def validation_end(self, outputs):
         mean_loss = torch.stack([x['val_loss'] for x in outputs]).mean()

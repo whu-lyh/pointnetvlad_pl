@@ -4,7 +4,7 @@ def get_options():
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--root_dir', type=str,
-                        default='/lyh/GPR_competition/UGV/TRAIN',
+                        default='/lyh/GPR_competition/UGV/TRAIN2',
                         help='root directory of the dataset')
     parser.add_argument('--positives_per_query', type=int, default=8,
                         help='Number of potential positives in each training tuple')
